@@ -1,11 +1,13 @@
-import Vue from 'vue';
-
-Vue.directive('click-outside', {
+export default {
     bind: (el, binding, vNode) => {
         if (typeof binding.value !== 'function') {
             const compName = vNode.context.name;
-            let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`;
-            if (compName) { warn += `Found in component '${compName}'` };
+            let warn = `[Vue-click-outside:] provided expression '${binding.expression}' must be a function`;
+
+            warn += compName
+                ? `Found in component '${compName}'`
+                : null;
+
             console.warn(warn);
         }
 
@@ -24,4 +26,5 @@ Vue.directive('click-outside', {
         document.removeEventListener('click', el.clickOutsideHandler);
         el.clickOutsideHandler = null;
     }
-})
+};
+

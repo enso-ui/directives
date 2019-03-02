@@ -1,5 +1,5 @@
-import Vue from 'vue';
-
-Vue.directive('select-on-focus', {
+export default {
     inserted: el => el.addEventListener('focus', el.select),
-});
+    unbind: el => el.removeEventListener('focus', el.select),
+};
+
