@@ -2,7 +2,7 @@ export default {
     bind: (el, binding, vNode) => {
         if (typeof binding.value !== 'function') {
             const compName = vNode.context.name;
-            let warn = `[Vue-click-outside:] provided expression '${binding.expression}' must be a function`;
+            let warn = `[v-click-outside:] provided expression '${binding.expression}' must be a function`;
 
             warn += compName
                 ? `Found in component '${compName}'`
@@ -11,13 +11,13 @@ export default {
             console.warn(warn);
         }
 
-        const bubble = binding.modifiers.bubble;
+        const { bubble } = binding.modifiers;
 
         el.clickOutsideHandler = (e) => {
             if (bubble || (!el.contains(e.target) && el !== e.target)) {
                 binding.value(e);
             }
-        }
+        };
 
         document.addEventListener('click', el.clickOutsideHandler);
     },
@@ -25,6 +25,5 @@ export default {
     unbind: (el) => {
         document.removeEventListener('click', el.clickOutsideHandler);
         el.clickOutsideHandler = null;
-    }
+    },
 };
-
