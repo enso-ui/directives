@@ -1,13 +1,9 @@
 export default {
     bind: (el, binding, vNode) => {
         if (typeof binding.value !== 'function') {
-            const compName = vNode.context.name;
+            const { name } = vNode.context;
             let warn = `[v-click-outside:] provided expression '${binding.expression}' must be a function`;
-
-            warn += compName
-                ? `Found in component '${compName}'`
-                : null;
-
+            warn += name ? `Found in component '${name}'` : null;
             console.warn(warn);
         }
 
