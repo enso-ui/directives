@@ -5,18 +5,18 @@ export default {
 
         if (typeof binding.value !== 'function') {
             warn = `[v-long-click:] provided expression '${binding.expression}' must be a function`;
-            warn += name ? `Found in component '${name}'` : null;
+            warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
         }
 
-        if (typeof binding.arg !== undefined || parseInt(binding.arg) != binding.arg) {
+        if (`${parseInt(binding.arg, 10)}` !== binding.arg) {
             warn = `[v-long-click:] provided argument '${binding.arg}' must be a number`;
-            warn += name ? `Found in component '${name}'` : null;
+            warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
         }
 
         let timer = null;
-        const duration = parseInt(binding.arg);
+        const duration = parseInt(binding.arg, 10);
 
         el.longClickStartHandler = (e) => {
             if (e.button === 0 && timer === null) {
