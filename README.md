@@ -18,24 +18,9 @@ For live examples and demos, you may visit [laravel-enso.com](https://www.larave
 
 Check the full documentation at  [docs.laravel-enso.com](https://docs.laravel-enso.com).
 
-### Installation
+### Installation, Configuration & Usage
 
-Install the package:
-```
-npm i @enso-ui/directives
-```
-Import the desired directives(s):
-```js
-import { clickOutside } from '@enso-ui/directives';
-```
-
-### Exports
-
-`@enso-ui/directives/renderless`:
-- `clickOutside`,
-- `focus`,
-- `hljs`,
-- `selectOnFocus`,
+Be sure to check out the full documentation for this package available at [docs.laravel-enso.com](https://docs.laravel-enso.com/frontend/directives.html)
 
 ## Contributions
 
