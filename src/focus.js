@@ -1,5 +1,7 @@
 export default {
     inserted: (el, binding, vNode) => {
-        vNode.context.$nextTick(() => el.focus());
+        if (typeof binding.value === 'undefined' || binding.value) {
+            vNode.context.$nextTick(() => el.focus());
+        }
     },
 };
