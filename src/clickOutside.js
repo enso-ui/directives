@@ -7,10 +7,8 @@ export default {
             console.warn(warn);
         }
 
-        const { bubble } = binding.modifiers;
-
         el.clickOutsideHandler = (e) => {
-            if (bubble || (!el.contains(e.target) && el !== e.target)) {
+            if (!el.contains(e.target) && el !== e.target) {
                 binding.value(e);
             }
         };
