@@ -1,3 +1,61 @@
+const zIndex = (elem) => {
+    if (elem === null) {
+        return 0;
+    }
+
+    return parseInt(window.getComputedStyle(elem).getPropertyValue('z-index'))
+        || zIndex(elem.parentElement);
+}
+
+const isNext = (first, second) => {
+    return first.compareDocumentPosition(second) & 0x04;
+}
+
+const isAbove = (below, top) => {
+    return zIndex(top) === zIndex(below) && isNext(below, top)
+        || zIndex(top) > zIndex(below);
+}
+
+const collision = (element, target) => {
+    const targetRect = element.getClientRects()[0] || {};
+    const elementRect = target.getClientRects()[0] || {};
+
+    const seprate = targetRect.right < elementRect.left
+        || targetRect.bottom < elementRect.top
+        || elementRect.bottom < targetRect.top
+        || elementRect.right < targetRect.left;
+
+    return !seprate;
+}
+
+const contained = (container, target) => {
+    if (target.contains(container)) {
+        return false;
+    }
+
+    if (collision(container, target) && isAbove(container, target)) {
+        return true;
+    }
+
+    return Array.from(container.children).reduce((result ,elem) => {
+        return result || contained(elem, target);
+    }, false);
+}
+
+const deepContained = (container, target) => {
+    if (target === null) {
+        return false;
+    }
+
+    return contained(container, target)
+        || deepContained(container, target.parentElement);
+}
+
+const inside = (container, target) => {
+    return container === target || container.contains(target)
+        || deepContained(container, target);
+}
+
 export default {
     bind: (el, binding, vNode) => {
         if (typeof binding.value !== 'function') {
@@ -8,7 +66,7 @@ export default {
         }
 
         el.clickOutsideHandler = (e) => {
-            if (!el.contains(e.target) && el !== e.target) {
+            if (! inside(el, e.target)) {
                 binding.value(e);
             }
         };
