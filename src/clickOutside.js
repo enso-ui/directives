@@ -51,12 +51,9 @@ const deepContained = (container, target) => {
         || deepContained(container, target.parentElement);
 }
 
-const inside = (container, target, deep) => {
-    if (container.contains(target) || container === target) {
-       return true;
-    }
-
-    return deep && deepContained(container, target);
+const inside = (container, target) => {
+    return container === target || container.contains(target)
+        || deepContained(container, target);
 }
 
 export default {
@@ -69,7 +66,7 @@ export default {
         }
 
         el.clickOutsideHandler = (e) => {
-            if (! inside(el, e.target, binding.modifiers.deep)) {
+            if (! inside(el, e.target)) {
                 binding.value(e);
             }
         };
