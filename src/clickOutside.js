@@ -20,12 +20,12 @@ const collision = (element, target) => {
     const targetRect = element.getClientRects()[0] || {};
     const elementRect = target.getClientRects()[0] || {};
 
-    const seprate = targetRect.right < elementRect.left
+    const separate = targetRect.right < elementRect.left
         || targetRect.bottom < elementRect.top
         || elementRect.bottom < targetRect.top
         || elementRect.right < targetRect.left;
 
-    return !seprate;
+    return !separate;
 }
 
 const contained = (container, target) => {
