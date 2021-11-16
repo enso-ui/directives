@@ -1,5 +1,5 @@
 export default {
-    bind: (el, binding, vNode) => {
+    beforeMount: (el, binding, vNode) => {
         const { name } = vNode.context;
         let warn = null;
 
@@ -40,7 +40,7 @@ export default {
         el.addEventListener('touchcancel', el.longClickEndHandler);
     },
 
-    unbind: (el) => {
+    unmounted: (el) => {
         el.removeEventListener('mousedown', el.longClickStartHandler);
         el.removeEventListener('touchstart', el.longClickStartHandler);
 

@@ -1,5 +1,3 @@
 export default {
-    inserted: (el, binding, vNode) => {
-        vNode.context.$nextTick(() => el.focus());
-    },
+    mounted: (el, binding, vNode) => binding.instance.$nextTick(() => el.focus()),
 };

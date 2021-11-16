@@ -57,10 +57,10 @@ const inside = (container, target) => {
 }
 
 export default {
-    bind: (el, binding, vNode) => {
+    beforeMount: (el, binding, vNode) => {
         if (typeof binding.value !== 'function') {
             const { name } = vNode.context;
-            let warn = `[v-click-outside:] provided expression '${binding.expression}' must be a function`;
+            let warn = `[v-click-outside:] provided expression must be a function`;
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
         }
@@ -74,7 +74,7 @@ export default {
         document.addEventListener('click', el.clickOutsideHandler);
     },
 
-    unbind: (el) => {
+    unmounted: (el) => {
         document.removeEventListener('click', el.clickOutsideHandler);
         el.clickOutsideHandler = null;
     },

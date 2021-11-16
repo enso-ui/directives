@@ -9,7 +9,7 @@ const resizeInput = (el) => {
 const handler = event => resizeInput(event.target);
 
 export default {
-    inserted: (el, binding, vNode) => {
+    mounted: (el, binding, vNode) => {
         const { name } = vNode.context;
 
         if (binding.arg && `${parseInt(binding.arg, 10)}` !== binding.arg) {
@@ -23,5 +23,5 @@ export default {
         resizeInput(el);
         el.addEventListener('input', handler);
     },
-    unbind: el => el.removeEventListener('input', handler),
+    unmounted: el => el.removeEventListener('input', handler),
 };

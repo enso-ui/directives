@@ -1,6 +1,6 @@
 import hljs from 'highlight.js';
 
 export default {
-    bind: el => hljs.highlightBlock(el.querySelector('code')),
-    componentUpdated: el => hljs.highlightBlock(el.querySelector('code')),
+    beforeMount: el => hljs.highlightBlock(el.querySelector('code')),
+    updated: el => hljs.highlightBlock(el.querySelector('code')),
 };
