@@ -1,6 +1,6 @@
 {
   "name": "@enso-ui/directives",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Vue directives",
   "main": "index.js",
   "scripts": {
