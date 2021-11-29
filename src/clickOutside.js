@@ -63,6 +63,8 @@ export default {
             let warn = `[v-click-outside:] provided expression must be a function`;
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
+
+            return;
         }
 
         el.clickOutsideHandler = (e) => {

@@ -16,6 +16,8 @@ export default {
             let warn = `[v-resize:] provided argument '${binding.arg}' must be a number`;
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
+
+            return;
         }
 
         min = binding.arg ? parseInt(binding.arg, 10) : 10;

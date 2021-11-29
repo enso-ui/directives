@@ -7,12 +7,16 @@ export default {
             warn = `[v-long-click:] provided expression '${binding.expression}' must be a function`;
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
+
+            return;
         }
 
         if (`${parseInt(binding.arg, 10)}` !== binding.arg) {
             warn = `[v-long-click:] provided argument '${binding.arg}' must be a number`;
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
+
+            return;
         }
 
         let timer = null;
