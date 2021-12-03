@@ -9,8 +9,8 @@ const resizeInput = (el) => {
 const handler = event => resizeInput(event.target);
 
 export default {
-    mounted: (el, binding, vNode) => {
-        const { name } = vNode.context;
+    mounted: (el, binding) => {
+        const { name } = binding.instance;
 
         if (binding.arg && `${parseInt(binding.arg, 10)}` !== binding.arg) {
             let warn = `[v-resize:] provided argument '${binding.arg}' must be a number`;

@@ -57,9 +57,9 @@ const inside = (container, target) => {
 }
 
 export default {
-    beforeMount: (el, binding, vNode) => {
+    beforeMount: (el, binding) => {
         if (typeof binding.value !== 'function') {
-            const { name } = vNode.context;
+            const { name } = binding.instance;
             let warn = `[v-click-outside:] provided expression must be a function`;
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);

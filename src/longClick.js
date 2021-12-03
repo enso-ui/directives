@@ -1,6 +1,6 @@
 export default {
-    beforeMount: (el, binding, vNode) => {
-        const { name } = vNode.context;
+    beforeMount: (el, binding) => {
+        const { name } = binding.instance;
         let warn = null;
 
         if (typeof binding.value !== 'function') {
