@@ -1,6 +1,6 @@
 let min;
 
-const resizeInput = (el) => {
+const resizeInput = el => {
     el.style.width = 0;
     const width = el.scrollWidth > min ? el.scrollWidth + 4 : min;
     el.style.width = `${width}px`;

@@ -2,7 +2,7 @@ export default {
     mounted: (el, binding) => {
         if (typeof binding.value !== 'function') {
             const { name } = binding.instance;
-            let warn = `[v-open-beneath:] provided expression must be a function`;
+            let warn = '[v-open-beneath:] provided expression must be a function';
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
 

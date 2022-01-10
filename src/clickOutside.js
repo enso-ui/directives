@@ -1,20 +1,16 @@
-const zIndex = (elem) => {
+const zIndex = elem => {
     if (elem === null) {
         return 0;
     }
 
-    return parseInt(window.getComputedStyle(elem).getPropertyValue('z-index'))
+    return parseInt(window.getComputedStyle(elem).getPropertyValue('z-index'), 10)
         || zIndex(elem.parentElement);
-}
+};
 
-const isNext = (first, second) => {
-    return first.compareDocumentPosition(second) & 0x04;
-}
+const isNext = (first, second) => first.compareDocumentPosition(second) & 0x04;
 
-const isAbove = (below, top) => {
-    return zIndex(top) === zIndex(below) && isNext(below, top)
+const isAbove = (below, top) => zIndex(top) === zIndex(below) && isNext(below, top)
         || zIndex(top) > zIndex(below);
-}
 
 const collision = (element, target) => {
     const targetRect = element.getClientRects()[0] || {};
@@ -26,7 +22,7 @@ const collision = (element, target) => {
         || elementRect.right < targetRect.left;
 
     return !separate;
-}
+};
 
 const contained = (container, target) => {
     if (target.contains(container)) {
@@ -37,10 +33,9 @@ const contained = (container, target) => {
         return true;
     }
 
-    return Array.from(container.children).reduce((result ,elem) => {
-        return result || contained(elem, target);
-    }, false);
-}
+    return Array.from(container.children)
+        .reduce((result, elem) => result || contained(elem, target), false);
+};
 
 const deepContained = (container, target) => {
     if (target === null) {
@@ -49,26 +44,24 @@ const deepContained = (container, target) => {
 
     return contained(container, target)
         || deepContained(container, target.parentElement);
-}
+};
 
-const inside = (container, target) => {
-    return container === target || container.contains(target)
+const inside = (container, target) => container === target || container.contains(target)
         || deepContained(container, target);
-}
 
 export default {
     beforeMount: (el, binding) => {
         if (typeof binding.value !== 'function') {
             const { name } = binding.instance;
-            let warn = `[v-click-outside:] provided expression must be a function`;
+            let warn = '[v-click-outside:] provided expression must be a function';
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
 
             return;
         }
 
-        el.clickOutsideHandler = (e) => {
-            if (! inside(el, e.target)) {
+        el.clickOutsideHandler = e => {
+            if (!inside(el, e.target)) {
                 binding.value(e);
             }
         };
@@ -76,7 +69,7 @@ export default {
         document.addEventListener('click', el.clickOutsideHandler);
     },
 
-    unmounted: (el) => {
+    unmounted: el => {
         document.removeEventListener('click', el.clickOutsideHandler);
         el.clickOutsideHandler = null;
     },

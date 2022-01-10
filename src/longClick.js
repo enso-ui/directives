@@ -22,13 +22,13 @@ export default {
         let timer = null;
         const duration = parseInt(binding.arg, 10);
 
-        el.longClickStartHandler = (e) => {
+        el.longClickStartHandler = e => {
             if (e.button === 0 && timer === null) {
                 timer = setTimeout(binding.value, duration);
             }
         };
 
-        el.longClickEndHandler = (e) => {
+        el.longClickEndHandler = () => {
             if (timer !== null) {
                 clearTimeout(timer);
                 timer = null;
@@ -44,7 +44,7 @@ export default {
         el.addEventListener('touchcancel', el.longClickEndHandler);
     },
 
-    unmounted: (el) => {
+    unmounted: el => {
         el.removeEventListener('mousedown', el.longClickStartHandler);
         el.removeEventListener('touchstart', el.longClickStartHandler);
 
