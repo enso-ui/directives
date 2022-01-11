@@ -1,30 +1,34 @@
 export default {
-    bind: (el, binding, vNode) => {
-        const { name } = vNode.context;
+    beforeMount: (el, binding) => {
+        const { name } = binding.instance;
         let warn = null;
 
         if (typeof binding.value !== 'function') {
             warn = `[v-long-click:] provided expression '${binding.expression}' must be a function`;
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
+
+            return;
         }
 
         if (`${parseInt(binding.arg, 10)}` !== binding.arg) {
             warn = `[v-long-click:] provided argument '${binding.arg}' must be a number`;
             warn += name ? `Found in component '${name}'` : '';
             console.warn(warn);
+
+            return;
         }
 
         let timer = null;
         const duration = parseInt(binding.arg, 10);
 
-        el.longClickStartHandler = (e) => {
+        el.longClickStartHandler = e => {
             if (e.button === 0 && timer === null) {
                 timer = setTimeout(binding.value, duration);
             }
         };
 
-        el.longClickEndHandler = (e) => {
+        el.longClickEndHandler = () => {
             if (timer !== null) {
                 clearTimeout(timer);
                 timer = null;
@@ -40,7 +44,7 @@ export default {
         el.addEventListener('touchcancel', el.longClickEndHandler);
     },
 
-    unbind: (el) => {
+    unmounted: el => {
         el.removeEventListener('mousedown', el.longClickStartHandler);
         el.removeEventListener('touchstart', el.longClickStartHandler);
 

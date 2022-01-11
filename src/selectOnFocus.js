@@ -1,4 +1,4 @@
 export default {
-    inserted: el => el.addEventListener('focus', el.select),
-    unbind: el => el.removeEventListener('focus', el.select),
+    mounted: el => el.addEventListener('focus', el.select),
+    unmounted: el => el.removeEventListener('focus', el.select),
 };
