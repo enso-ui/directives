@@ -1,53 +1,38 @@
-const zIndex = elem => {
-    if (elem === null) {
-        return 0;
-    }
+const propertyValue = elem => window.getComputedStyle(elem)
+    .getPropertyValue('z-index');
 
-    return parseInt(window.getComputedStyle(elem).getPropertyValue('z-index'), 10)
-        || zIndex(elem.parentElement);
+const zIndex = elem => elem === null
+    ? 0
+    : (parseInt(propertyValue(elem), 10) || zIndex(elem.parentElement));
+
+const intersect = (container, target) => {
+    const containerRect = target.getClientRects()[0] || {};
+    const targetRect = container.getClientRects()[0] || {};
+
+    return !(targetRect.right < containerRect.left
+        || targetRect.bottom < containerRect.top
+        || containerRect.bottom < targetRect.top
+        || containerRect.right < targetRect.left);
 };
 
-const isNext = (first, second) => first.compareDocumentPosition(second) & 0x04;
-
-const isAbove = (below, top) => zIndex(top) === zIndex(below) && isNext(below, top)
-        || zIndex(top) > zIndex(below);
-
-const collision = (element, target) => {
-    const targetRect = element.getClientRects()[0] || {};
-    const elementRect = target.getClientRects()[0] || {};
-
-    const separate = targetRect.right < elementRect.left
-        || targetRect.bottom < elementRect.top
-        || elementRect.bottom < targetRect.top
-        || elementRect.right < targetRect.left;
-
-    return !separate;
-};
-
-const contained = (container, target) => {
-    if (target.contains(container)) {
-        return false;
-    }
-
-    if (collision(container, target) && isAbove(container, target)) {
-        return true;
-    }
-
-    return Array.from(container.children)
-        .reduce((result, elem) => result || contained(elem, target), false);
-};
-
-const deepContained = (container, target) => {
+const inside = (container, target) => {
     if (target === null) {
         return false;
     }
 
-    return contained(container, target)
-        || deepContained(container, target.parentElement);
-};
+    const isInside = container === target
+        || container.contains(target)
+        || !target.contains(container)
+        && intersect(container, target)
+        && zIndex(target) >= zIndex(container);
 
-const inside = (container, target) => container === target || container.contains(target)
-        || deepContained(container, target);
+    const isInsideOfDescendant = () => Array.from(container.children)
+        .reduce((isInside, elem) => isInside || inside(elem, target), false)
+
+    return isInside
+        || isInsideOfDescendant()
+        || inside(container, target.parentElement);
+};
 
 export default {
     beforeMount: (el, binding) => {
