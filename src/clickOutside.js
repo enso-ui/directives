@@ -1,9 +1,12 @@
-const propertyValue = elem => window.getComputedStyle(elem)
-    .getPropertyValue('z-index');
+const propertyValue = (elem, property) => window
+    .getComputedStyle(elem)
+    .getPropertyValue(property);
+
+const zIndexProperty = elem => parseInt(propertyValue(elem, 'z-index'), 10);
 
 const zIndex = elem => elem === null
     ? 0
-    : (parseInt(propertyValue(elem), 10) || zIndex(elem.parentElement));
+    : zIndexProperty(elem) || zIndex(elem.parentElement);
 
 const intersect = (container, target) => {
     const containerRect = target.getClientRects()[0] || {};
@@ -15,47 +18,53 @@ const intersect = (container, target) => {
         || containerRect.right < targetRect.left);
 };
 
-const inside = (container, target) => {
+const isIndirectChild = (container, target) => !target.contains(container)
+    && intersect(container, target)
+    && zIndex(target) >= zIndex(container);
+
+const outside = (container, target) => {
     if (target === null) {
-        return false;
+        return true;
     }
 
-    const isInside = container === target
-        || container.contains(target)
-        || !target.contains(container)
-        && intersect(container, target)
-        && zIndex(target) >= zIndex(container);
+    const isOutside = container !== target
+        && !container.contains(target)
+        && !isIndirectChild(container, target);
 
-    const isInsideOfDescendant = () => Array.from(container.children)
-        .reduce((isInside, elem) => isInside || inside(elem, target), false)
+    const isOutsideOfChildren = () => Array
+        .from(container.children)
+        .every(elem => outside(elem, target));
 
-    return isInside
-        || isInsideOfDescendant()
-        || inside(container, target.parentElement);
+    return isOutside && isOutsideOfChildren();
 };
+
+const warn = ({ name }) => {
+    let warn = '[v-click-outside:] provided expression must be a function';
+    warn += name ? `Found in component '${name}'` : '';
+    console.warn(warn);
+}
+
+let handler = null;
 
 export default {
     beforeMount: (el, binding) => {
         if (typeof binding.value !== 'function') {
-            const { name } = binding.instance;
-            let warn = '[v-click-outside:] provided expression must be a function';
-            warn += name ? `Found in component '${name}'` : '';
-            console.warn(warn);
-
+            warn(binding.instance);
             return;
         }
 
-        el.clickOutsideHandler = e => {
-            if (!inside(el, e.target)) {
+        handler = e => {
+            if (outside(el, e.target)) {
                 binding.value(e);
             }
         };
 
-        document.addEventListener('click', el.clickOutsideHandler);
+        document.addEventListener('click', handler);
     },
 
     unmounted: el => {
-        document.removeEventListener('click', el.clickOutsideHandler);
-        el.clickOutsideHandler = null;
+        if (handler) {
+            document.removeEventListener('click', handler);
+        }
     },
 };
