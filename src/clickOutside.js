@@ -62,7 +62,7 @@ export default {
         document.addEventListener('click', handler);
     },
 
-    unmounted: el => {
+    unmounted: () => {
         if (handler) {
             document.removeEventListener('click', handler);
         }
