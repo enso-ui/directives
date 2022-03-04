@@ -44,27 +44,22 @@ const warn = ({ name }) => {
     console.warn(warn);
 }
 
-let handler = null;
+const handler = (e, el, binding) => {
+    if (outside(el, e.target)) {
+        binding.value(e);
+    }
+};
 
 export default {
     beforeMount: (el, binding) => {
         if (typeof binding.value !== 'function') {
             warn(binding.instance);
-            return;
+        } else {
+            document.addEventListener('click', e => handler(e, el, binding));
         }
-
-        handler = e => {
-            if (outside(el, e.target)) {
-                binding.value(e);
-            }
-        };
-
-        document.addEventListener('click', handler);
     },
 
     unmounted: () => {
-        if (handler) {
-            document.removeEventListener('click', handler);
-        }
+        document.removeEventListener('click', handler);
     },
 };
