@@ -1,6 +1,8 @@
-import hljs from 'highlight.js';
+import * as hljsModule from 'highlight.js';
+
+const hljs = hljsModule.default ?? hljsModule;
 
 export default {
-    beforeMount: el => hljs.highlightBlock(el.querySelector('code')),
-    updated: el => hljs.highlightBlock(el.querySelector('code')),
+    beforeMount: el => hljs.highlightElement(el.querySelector('code')),
+    updated: el => hljs.highlightElement(el.querySelector('code')),
 };
