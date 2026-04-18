@@ -1,30 +1,131 @@
 # Directives
 
-![NPM License](https://img.shields.io/npm/l/@enso-ui/directives.svg)
-![npm download](https://img.shields.io/npm/dm/@enso-ui/directives.svg)
-![GitHub top language](https://img.shields.io/github/languages/top/enso-ui/directives.svg)
-![GitHub issues](https://img.shields.io/github/issues/enso-ui/directives.svg)
-![npm version](https://img.shields.io/npm/v/@enso-ui/directives.svg)
+Vue directives used across the Enso UI packages.
 
-Vue Directives Package
+## Installation
+
+```bash
+yarn add @enso-ui/directives
+```
 
 ## Usage
 
-The directives can be used outside of the Enso ecosystem.
+Register the directives you need locally:
 
-### Demo
+```js
+import { clickOutside, scrollIntoView } from '@enso-ui/directives';
 
-For live examples and demos, you may visit [laravel-enso.com](https://www.laravel-enso.com)
+export default {
+    directives: { clickOutside, scrollIntoView },
+};
+```
 
-### Installation, Configuration & Usage
+Or register them globally:
 
-Be sure to check out the full documentation for this package available at [docs.laravel-enso.com](https://docs.laravel-enso.com/frontend/directives.html)
+```js
+import * as directives from '@enso-ui/directives';
 
-## Contributions
+Object.entries(directives).forEach(([name, directive]) => {
+    app.directive(name, directive);
+});
+```
 
-are welcome. Pull requests are great, but issues are good too.
+## API
 
-Thank you to all the people who already contributed to Enso!
+### `v-click-outside`
+
+Calls a handler when the click target is outside the bound element.
+
+```vue
+<div v-click-outside="close">
+    ...
+</div>
+```
+
+### `v-fits-below`
+
+Computes whether an element fully fits in the current viewport and passes the
+result to a callback.
+
+```vue
+<div v-fits-below="updatePlacement">
+    ...
+</div>
+```
+
+```js
+methods: {
+    updatePlacement(fitsBelow) {
+        this.fitsBelow = fitsBelow;
+    },
+},
+```
+
+### `v-focus`
+
+Focuses the element after the current tick.
+
+```vue
+<input v-focus>
+```
+
+### `v-hljs`
+
+Runs Highlight.js on the first `code` element inside the bound node.
+
+```vue
+<pre v-hljs>
+    <code>{{ snippet }}</code>
+</pre>
+```
+
+### `v-long-click`
+
+Runs a handler only after the pointer stays pressed for the configured duration
+in milliseconds.
+
+```vue
+<button v-long-click:750="archive">
+    Archive
+</button>
+```
+
+### `v-resize`
+
+Auto-resizes an input to its content width. An optional numeric argument sets
+the minimum width in pixels.
+
+```vue
+<input v-resize:80 v-model="value">
+```
+
+### `v-scroll-into-view`
+
+Calls `Element.scrollIntoView()` when `scroll` transitions to `true`.
+
+```vue
+<a v-scroll-into-view="{
+    scroll: active,
+    block: 'nearest',
+    inline: 'nearest',
+    behavior: 'smooth',
+}">
+    Current item
+</a>
+```
+
+Supported options are the native `scrollIntoView()` options:
+- `block`
+- `inline`
+- `behavior`
+
+### `v-select-on-focus`
+
+Selects the current value when the element receives focus.
+
+```vue
+<input v-select-on-focus v-model="value">
+```
 
 ## License
 
