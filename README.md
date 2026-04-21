@@ -19,6 +19,12 @@ Vue directives used across Enso UI packages.
 yarn add @enso-ui/directives
 ```
 
+## Features
+
+- exports reusable DOM and interaction directives consumed across Enso UI packages
+- supports focus, click-outside, select-on-focus, resize, long-click, and scroll-into-view flows
+- includes a Highlight.js directive for rendered code snippets
+
 ## Usage
 
 Register the directives you need locally:
