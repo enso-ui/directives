@@ -1,7 +1,7 @@
 {
   "name": "@enso-ui/directives",
   "version": "3.1.2",
-  "description": "Vue directives",
+  "description": "Vue directives used across Enso UI packages.",
   "main": "index.js",
   "repository": {
     "type": "git",
