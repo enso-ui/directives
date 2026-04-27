@@ -1,8 +1,19 @@
-import * as hljsModule from 'highlight.js';
+let hljsPromise;
 
-const hljs = hljsModule.default ?? hljsModule;
+const highlight = async el => {
+    if (!hljsPromise) {
+        hljsPromise = import('highlight.js')
+            .then(module => module.default ?? module);
+    }
+
+    const code = el.querySelector('code');
+
+    if (code) {
+        (await hljsPromise).highlightElement(code);
+    }
+};
 
 export default {
-    beforeMount: el => hljs.highlightElement(el.querySelector('code')),
-    updated: el => hljs.highlightElement(el.querySelector('code')),
+    mounted: highlight,
+    updated: highlight,
 };
