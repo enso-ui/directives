@@ -1,7 +1,7 @@
 # Directives
 
 [![License](https://img.shields.io/badge/license-MIT-10b981.svg)](https://github.com/enso-ui/directives/blob/master/LICENSE)
-[![Stable](https://img.shields.io/badge/stable-3.1.3-2563eb.svg)](https://www.npmjs.com/package/@enso-ui/directives)
+[![Stable](https://img.shields.io/badge/stable-3.1.4-2563eb.svg)](https://www.npmjs.com/package/@enso-ui/directives)
 [![Downloads](https://img.shields.io/npm/dm/@enso-ui/directives.svg)](https://www.npmjs.com/package/@enso-ui/directives)
 [![Vue](https://img.shields.io/badge/vue-3.x-42b883.svg)](https://vuejs.org/)
 [![JavaScript](https://img.shields.io/badge/javascript-ES2020-f7df1e.svg)](https://developer.mozilla.org/docs/Web/JavaScript)
@@ -23,7 +23,7 @@ yarn add @enso-ui/directives
 
 - exports reusable DOM and interaction directives consumed across Enso UI packages
 - supports focus, click-outside, select-on-focus, resize, long-click, and scroll-into-view flows
-- keeps the optional Highlight.js directive available through an explicit direct import without loading it through the main directives bundle
+- stays dependency-light and does not pull syntax highlighters or other large optional libraries
 
 ## Usage
 
@@ -77,19 +77,9 @@ Calls `Element.scrollIntoView()` when `scroll` transitions to `true`.
 
 Selects the current value when the element receives focus.
 
-### Optional `v-hljs`
-
-Runs Highlight.js on the first `code` element inside the bound node.
-
-Install `highlight.js` and import the directive directly:
-
-```js
-import hljs from '@enso-ui/directives/src/hljs';
-```
-
 ## Depends On
 
-- [`highlight.js`](https://highlightjs.org/) is optional and only needed when importing `@enso-ui/directives/src/hljs`
+- Vue 3
 
 ## Contributions
 
