@@ -1,3 +1,4 @@
 export default {
-    mounted: (el, binding) => binding.instance.$nextTick(() => el.focus()),
+    mounted: (el, { instance, value = true }) => value
+        && instance.$nextTick(() => el.focus()),
 };
